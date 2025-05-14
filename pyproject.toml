@@ -48,7 +48,7 @@ script = "build.py"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core", "setuptools", "cython"]
+requires = ["poetry-core", "setuptools", "cython<3.1.0"]
 
 [tool.black]
 line-length = 100
