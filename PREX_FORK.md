@@ -32,7 +32,8 @@ upstream `v0.2.16` 태그에 아래 패치 하나만 얹었어요. 그 외 코�
   | 0.2.16 + 이 패치 | 평탄 |
 
   tracemalloc과 gc 타입 집계에서 `SSLError`, `traceback`, `_MySQLProtocol`, `SSLContext`가 같이 늘었고, `asyncio/sslproto.py` 256 KiB 버퍼 할당이 잡혔어요.
-- **upstream**: long2ice/asyncmy에 이슈와 PR을 올릴 예정이에요. 링크는 올린 뒤 여기에 적어 주세요.
+- **upstream**: https://github.com/long2ice/asyncmy/pull/171 (2026-11-05). 머지되고 릴리스되면 아래 조건대로 fork를 없애요.
+- **prex-core**: Prex/prex-core#15037 (fork 고정), release-3.45.24부터 포함.
 
 ### 이 fork를 없앨 수 있는 조건
 
