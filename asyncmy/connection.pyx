@@ -231,7 +231,18 @@ class _MySQLProtocol(asyncio.BufferedProtocol):
     def connection_lost(self, exc):
         self.eof = True
         if exc is not None:
-            self.exc = exc
+            # [teamprex fork] Keep the error, not its traceback (see PREX_FORK.md).
+            # The traceback's frames hold the asyncio SSL transport, and the
+            # transport holds this protocol. Storing the exception as is makes a
+            # reference cycle, so the protocol, its read buffer and the transport's
+            # SSL objects (~256 KiB buffer + OpenSSL state per connection) stay alive
+            # until a full gc pass. A process that recycles TLS connections
+            # (SQLAlchemy pool_recycle / pool_pre_ping on stale connections) but
+            # allocates little in between grows by the size of every dropped
+            # connection. Only str(self.exc) and "is not None" are used afterwards.
+            self.exc = exc.with_traceback(None)
+            exc.__context__ = None
+            exc.__cause__ = None
         self.transport = None
         for waiter in (self._read_waiter, self._drain_waiter):
             if waiter is not None and not waiter.done():
